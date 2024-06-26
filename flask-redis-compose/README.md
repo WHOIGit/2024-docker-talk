@@ -21,10 +21,16 @@ To get started with the Flask-Redis Compose application, follow these steps:
 From the project directory, start up the application by running:
 
 ```bash
-docker compose up --build
+docker compose up -d --build
 ```
 
 This command builds the images for the application if they don't exist (in this case, the Flask application), downloads any images that are not yet available locally (in this case, Redis) and starts the containers.
+
+When you're done using the app, stop it by running:
+
+```bash
+docker compose down
+```
 
 ### Access the Application
 
@@ -50,6 +56,10 @@ The environment section of a service configuration allows you to pass environmen
 ### Communication with the host network
 
 To make the Flask application reachable from a web browser, the port on which it's listening for HTTP traffic is mapped to a host port. This allows for access to the web application from outside Docker containers.
+
+### Persistence and volume mapping
+
+To make the app's visitor count persistent between runs, a Docker volume is created and mapped to `/data` in the container's filesystem. `/data` is where the Dockerized version of Redis stores its state, and the Docker volume's contents persist even when the application is not running. Without storing data in a host volume, the app will "forget" the visitor count when Redis is shut down.
 
 ## Conclusion
 
